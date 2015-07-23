@@ -1,0 +1,12 @@
+<div>
+    <a href="/">回首页</a>
+    {{Home.error}}
+    <form name="signup_form">
+        <ul>
+            <li>用户名：<input type="text" ng-model="Home.loginData.username" placeholder="填写用户名" required="required"/></li>
+            <li>密码：<input type="password" ng-model="Home.loginData.password" required="required"/></li>
+        </ul>
+        <input type="submit" value="登录" ng-click="Home.doLogin()"/>
+        <input type="reset" value="清空">
+    </form>
+</div>

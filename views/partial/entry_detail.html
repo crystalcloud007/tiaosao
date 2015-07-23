@@ -1,0 +1,39 @@
+<a href="/">回首页</a>
+<p ng-hide="Detail.success_entry">{{Detail.message_entry}}</p>
+<div ng-show="Detail.success_entry">
+    <h2>{{Detail.entry.title}}</h2>
+    发布人：{{Detail.entry.creator_name}}<br/>
+    联系方式：{{Detail.entry.contact}}<p/>
+    价格：{{Detail.entry.price}}<p/>
+    查看次数:{{Detail.entry.count_of_read}}<p/>
+    评论数：{{Detail.entry.count_of_comments}}<p/>
+    <ul>类型描述栏目：--真实应用情况下会随着业务不同而不同
+        <li>栏目1：{{Detail.entry.desc.a}}</li>
+        <li>栏目2：{{Detail.entry.desc.b}}</li>
+        <li>栏目3：{{Detail.entry.desc.c}}</li>
+    </ul>
+    内容：<p/>{{Detail.entry.content}}<p/>
+    最后查看时间：{{Detail.entry.time_of_last_read}}
+</div>
+<a ng-if="Detail.can_edit" href="#/edit_entry/{{Detail.entryID}}">编辑帖子</a><hr/>
+<div ng-if="Detail.isLoggedIn&&Detail.success_comment">
+    <form>发表评论：
+        <textarea rows="5" cols="50" ng-model="Detail.comment_content">写下评论</textarea>
+        <input type="submit" value="发表" ng-click="Detail.AddComment()"/><input type="reset" value="清空">
+    </form>
+</div>
+<p ng-hide="Detail.success_comment">{{Detail.message_comment}}</p>
+<ul ng-show="Detail.success_comment" ng-repeat="comment in Detail.comments">
+    <li>
+        评论人：{{comment.creator_name}}<p/>
+        评论于：{{comment.time_of_creation}}<p/>
+        内容：<p/>
+        {{comment.content}}
+    </li>
+</ul>
+<a href="javascript:void(0)" ng-if="Detail.page_current > 1" ng-click="Detail.pullComments(1)">第一页</a>
+<div ng-show="Detail.success_comment" ng-repeat="page in Detail.page_arr">
+    <a href="javascript:void(0)" ng-click="Detail.pullComments(page)" ng-if="page!=Detail.page_current">{{page}}</a>
+    <strong ng-if="page==Detail.page_current">{{page}}</strong>
+</div>
+<a href="javascript:void(0)" ng-if="Detail.page_current < Detail.pages" ng-click="Detail.pullComments(Detail.page_current)">下一页</a>

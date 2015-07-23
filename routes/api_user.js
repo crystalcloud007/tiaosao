@@ -1,13 +1,13 @@
 /**
  * Created by Haoran on 2015/7/18.
- * ÓĞ¹ØÓÃ»§×¢²á£¬µÇÂ¼£¬ĞÅÏ¢ĞŞ¸ÄµÈ¡£
+ * æœ‰å…³ç”¨æˆ·æ³¨å†Œï¼Œç™»å½•ï¼Œä¿¡æ¯ä¿®æ”¹ç­‰ã€‚
  */
 var User = require('../models/User');
 var jwt = require('jsonwebtoken');
 var config = require('../config');
 var secretKey = config.secretKey;
 
-// ÉèÖÃtoken£¬Ç¿ÖÆ¹æ¶¨Ã¿ÖÜ¹ıÆÚ¡£
+// è®¾ç½®tokenï¼Œå¼ºåˆ¶è§„å®šæ¯å‘¨è¿‡æœŸã€‚
 function CreateToken(user)
 {
     var token = jwt.sign(
@@ -35,8 +35,8 @@ module.exports = function(app, express)
                 username: req.body.username,
                 password: req.body.password,
                 realname: req.body.realname,
-                contact: req.body.contact,							// ÊÖ»úºÅÂë
-                email: req.body.email || '',						// ÓÃ»§ÓÊÏä
+                contact: req.body.contact,							// æ‰‹æœºå·ç 
+                email: req.body.email,						        // ç”¨æˆ·é‚®ç®±
                 level: config.level_user['common'],
             }
         );
@@ -122,7 +122,7 @@ module.exports = function(app, express)
         }
     });
 
-    // ²é¿´×Ô¼ºµÄ×ÊÁÏ
+    // æŸ¥çœ‹è‡ªå·±çš„èµ„æ–™
     api.route('/me')
         .get(function(req,res)
         {
@@ -167,6 +167,7 @@ module.exports = function(app, express)
                     if(req.body.email)
                         user.email = req.body.email;
 
+
                     user.save(function(err)
                     {
                         if(err)
@@ -175,7 +176,9 @@ module.exports = function(app, express)
                             return;
                         }
 
-                        res.send({success: true, message:'User modification success'});
+                        var token = CreateToken(user);
+
+                        res.send({success: true, message:'User modification success', token: token});
                     });
                 }
                 else
@@ -198,17 +201,26 @@ module.exports = function(app, express)
             }
             if(user)
             {
-                user.password = req.body.password;
-                user.save(function(err)
+                var valid = user.comparePassword(req.body.oldPassword);
+                if(valid)
                 {
-                    if(err)
+                    user.password = req.body.password;
+                    user.save(function(err)
                     {
-                        res.send({success: false, message: err});
-                        return;
-                    }
+                        if(err)
+                        {
+                            res.send({success: false, message: err});
+                            return;
+                        }
+                        var token = CreateToken(user);
+                        res.send({success: true, message:'Password modification success', token: token});
+                    });
+                }
+                else
+                {
+                    res.send({success: false, message:'Invalid password'});
+                }
 
-                    res.send({success: true, message:'Password modification success'});
-                });
             }
             else
             {

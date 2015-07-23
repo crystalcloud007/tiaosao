@@ -1,0 +1,10 @@
+<div>
+    <h3>这里是主页的位置，具体显示内容除了菜单以外，还需要另行确认。</h3>
+    <a ng-if="Home.isLoggedIn" href="/new_entry">新建帖子</a><br/>
+    <div ng-repeat="item_main in Home.menu_items">
+        {{item_main.value}}
+        <ul ng-repeat="item_sub in item_main.subs">
+            <li><a href="/list/{{item_main.name}}/{{item_sub.name}}/1">{{item_sub.value}}</a></li>
+        </ul>
+    </div>
+</div>

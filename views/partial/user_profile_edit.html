@@ -1,0 +1,10 @@
+<div>
+    <a href="/">回首页</a>
+    <strong ng-if="!Profile.success">{{Profile.error}}</strong>
+    <form>
+        真实姓名：<input type="text" ng-model="Profile.editData.realname" placeholder="填写真实姓名" required="required"/><br/>
+        联系方式：<input type="text" ng-model="Profile.editData.contact" placeholder="个人常用手机号码" required="required"/><br/>
+        电子邮箱：<input type="text" ng-model="Profile.editData.email" placeholder="电子邮箱地址" required="required"/><br/>
+        <input type="submit" value="确认并提交" ng-click="Profile.editProfile()"/>
+    </form>
+</div>

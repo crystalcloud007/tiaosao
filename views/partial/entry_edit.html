@@ -1,0 +1,16 @@
+<div>
+    <a href="/">放弃并回首页</a>
+    <form name="edit_entry_form">
+        标题: <input type="text" ng-model="EditEntry.entry.title" placeholder="标题" required="required"/><br/>
+        价格: <input type="number" ng-model="EditEntry.entry.price" placeholder="价格" required="required"/><br/>
+        联系方式: <input type="text" ng-model="EditEntry.entry.contact" placeholder="个人常用手机号码" required="required"/><br/>
+        <ul>业务描述-真实应用中会随着业务类型而改变
+            <li>描述1：<input type="text" ng-model="EditEntry.entry.desc.a" placeholder="描述1" required="required"></li>
+            <li>描述2：<input type="text" ng-model="EditEntry.entry.desc.b" placeholder="描述2" required="required"></li>
+            <li>描述3：<input type="text" ng-model="EditEntry.entry.desc.c" placeholder="描述3" required="required"></li>
+        </ul>
+        内容：
+        <textarea rows="10" cols="100" ng-model="EditEntry.entry.content" required="required">写下具体内容</textarea><br/>
+        <input type="submit" value="提交" ng-click="EditEntry.edit()"/><input type="reset" value="清空">
+    </form>
+</div>

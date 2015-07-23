@@ -1,0 +1,27 @@
+<div>
+    <a href="/">放弃并回到首页</a>
+    <form name="new_entry_form">
+        <strong>主要类型：</strong>
+        <select ng-model="NewEntry.select_main" ng-options="item.value for item in NewEntry.menu_items" ng-required="true" ng-click="NewEntry.changeMain()">
+            选择主要类型
+        </select>
+        <br/>
+        <strong ng-if="NewEntry.entry.cate_main">次要类型：</strong>
+        <select ng-if="NewEntry.entry.cate_main" ng-model="NewEntry.select_sub" ng-required="true" ng-options="item.value for item in NewEntry.select_main.subs" ng-click="NewEntry.changeSub()">
+            选择次要类型
+        </select>
+        <br/>
+
+        标题: <input type="text" ng-model="NewEntry.entry.title" placeholder="标题" ng-required="true"/><br/>
+        价格: <input type="number" ng-model="NewEntry.entry.price" placeholder="价格" ng-required="true"/><br/>
+        <ul ng-show="NewEntry.entry.cate_sub">业务描述-真实应用中会随着业务类型而改变
+            <li>描述1：<input type="text" ng-model="NewEntry.entry.desc.a" placeholder="描述1" ng-required="true"></li>
+            <li>描述2：<input type="text" ng-model="NewEntry.entry.desc.b" placeholder="描述2" ng-required="true"></li>
+            <li>描述3：<input type="text" ng-model="NewEntry.entry.desc.c" placeholder="描述3" ng-required="true"></li>
+        </ul>
+        内容：
+        <textarea rows="10" cols="100" ng-model="NewEntry.entry.content" ng-required="true">写下具体内容</textarea><br/>
+        <input ng-disabled="new_entry_form.$invalid" type="submit" value="提交" ng-click="NewEntry.newEntry()"/><input type="reset" value="清空">
+
+    </form>
+</div>

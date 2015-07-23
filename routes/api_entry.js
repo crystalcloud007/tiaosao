@@ -1,6 +1,6 @@
 /**
  * Created by Haoran on 2015/7/18.
- * ÓĞ¹Ø·¢ÌûµÄAPI£¬»¹Ã»ÓĞÉæ¼°µ½ÎÄ¼şÉÏ´«¡£
+ * æœ‰å…³å‘å¸–çš„APIï¼Œè¿˜æ²¡æœ‰æ¶‰åŠåˆ°æ–‡ä»¶ä¸Šä¼ ã€‚
  */
 var Entry = require('../models/Entry');
 var Comment = require('../models/EntryComment');
@@ -13,7 +13,67 @@ module.exports = function(app, express)
 {
     var api = express.Router();
 
-    // µÃµ½Ìû×ÓÁĞ±í£¬¸ù¾İÀàĞÍºÍÒ³ÃæÏÔÊ¾¡£
+    // å¾—åˆ°å¸–å­æ€»æ•°
+    api.get('/entry_count/:cate_main/:cate_sub', function(req,res)
+    {
+        console.log(req.params.cate_main + ' || ' + req.params.cate_sub);
+        if(req.params.cate_main == 'all')
+        {
+            Entry.count({completed: true}, function(err,count)
+            {
+                if(err)
+                {
+                    res.status(500).send({success: false, message: err});
+                    return;
+                }
+                var page_count = Math.ceil(count / config.entries_per_page);
+                res.send({success: true, count: count, page_count: page_count});
+            });
+        }
+        else if(req.params.cate_sub == 'all')
+        {
+            Entry.count({category_main: req.params.cate_main, completed: true}, function(err,count)
+            {
+                if(err)
+                {
+                    res.status(500).send({success: false, message: err});
+                    return;
+                }
+                var page_count = Math.ceil(count / config.entries_per_page);
+                res.send({success: true, count: count, page_count: page_count});
+            });
+        }
+        else
+        {
+            Entry.count({category_main:req.params.cate_main, category_sub: req.params.cate_sub,
+                completed: true}, function(err,count)
+            {
+                if(err)
+                {
+                    res.status(500).send({success: false, message: err});
+                    return;
+                }
+                var page_count = Math.ceil(count / config.entries_per_page);
+                res.send({success: true, count: count, page_count: page_count});
+            });
+        }
+    });
+
+    api.get('/comment_count/:id', function(req,res)
+    {
+        Comment.count({target: req.params.id}, function(err, count)
+        {
+            if(err)
+            {
+                res.status(500).send({success: false, message:err});
+                return;
+            }
+            var page_count = Math.ceil(count / config.comment_per_page);
+            res.send({success: true, count: count, page_count: page_count});
+        });
+    });
+
+    // å¾—åˆ°å¸–å­åˆ—è¡¨ï¼Œæ ¹æ®ç±»å‹å’Œé¡µé¢æ˜¾ç¤ºã€‚
     api.get('/list/:category_main/:category_sub/:page', function(req,res)
     {
         var pageNum = parseInt(req.params.page);
@@ -22,7 +82,8 @@ module.exports = function(app, express)
             res.status(404).send({success: false, message:'The page your required does NOT exist'});
             return;
         }
-        // ÌáÈ¡È«²¿ÀàĞÍ
+
+        // æå–å…¨éƒ¨ç±»å‹
         if(req.params.category_main == 'all')
         {
             Entry.find({})
@@ -38,13 +99,13 @@ module.exports = function(app, express)
                 res.send({success: true, entries: entries});
             });
         }
-        // ÌáÈ¡Ö¸¶¨ÀàĞÍ
+        // æå–æŒ‡å®šç±»å‹
         else
         {
             if(req.params.category_sub == 'all')
             {
                 Entry.find({category_main: req.params.category_main})
-                    .select('category_main category_sub creator_name title price desc')
+                    .select('category_main category_sub creator_name title price contact desc count_of_read count_of_comments')
                     .skip((pageNum - 1) * config.entries_per_page).limit(config.entries_per_page)
                     .exec(function(err, entries)
                     {
@@ -59,7 +120,7 @@ module.exports = function(app, express)
            else
             {
                 Entry.find({category_main: req.params.category_main, category_sub: req.params.category_sub})
-                    .select('category_main category_sub creator_name title price desc')
+                    .select('category_main category_sub creator_name title price contact desc count_of_read count_of_comments')
                     .skip((pageNum - 1) * config.entries_per_page).limit(config.entries_per_page)
                     .exec(function(err, entries)
                     {
@@ -85,7 +146,7 @@ module.exports = function(app, express)
             }
             if(entry)
             {
-                // ¼ÇÂ¼¹Û²ì´ÎÊı
+                // è®°å½•è§‚å¯Ÿæ¬¡æ•°
                 entry.count_of_read += 1;
                 entry.time_of_last_read = Date.now();
                 entry.markModified('time_of_last_read');
@@ -124,7 +185,7 @@ module.exports = function(app, express)
                 var pageNum = parseInt(req.params.page);
                 if(isNaN(pageNum))
                 {
-                    res.send({success: false, entry: 'No page num specified'});
+                    res.send({success: false, message: 'No page num specified'});
                 }
                 else
                 {
@@ -174,8 +235,55 @@ module.exports = function(app, express)
         }
     });
 
-    // ·¢Ìû×Ó£¬Ğ´Ö÷ÒªÄÚÈİ
-    api.post('/new', function(req,res)
+    // å‘å¸–å­ï¼Œå†™å…¨éƒ¨å†…å®¹ -- å›¾ç‰‡å°šæœªæ·»åŠ 
+    api.post('/new/all',function(req,res)
+    {
+        User.findById(req.decoded.id).select('realname contact').exec(function(err, user)
+        {
+            if(err)
+            {
+                res.send({success: false, message: err});
+                return;
+            }
+            if(user)
+            {
+                var entry = new Entry(
+                    {
+                        creator: req.decoded.id,
+                        category_main: req.body.cate_main,
+                        category_sub: req.body.cate_sub,
+                        creator_name: user.realname,
+                        title: req.body.title,
+                        price: req.body.price,
+                        contact: user.contact,
+                        desc: req.body.desc,
+                        content:req.body.content,
+                        completed: true,
+                    }
+                );
+
+                //console.log(entry.creatorName);
+
+                entry.save(function(err)
+                {
+                    if(err)
+                    {
+                        res.send({success: false, message: err});
+                        return;
+                    }
+                    res.send({success: true, message:'New entry created', id: entry._id});
+                });
+            }
+            else
+            {
+                res.send({success: false, message: 'Please re-login'});
+                return;
+            }
+        });
+    });
+
+    // å‘å¸–å­ï¼Œå†™ä¸»è¦å†…å®¹
+    api.post('/new/title', function(req,res)
     {
         User.findById(req.decoded.id).select('realname contact').exec(function(err, user)
         {
@@ -211,7 +319,7 @@ module.exports = function(app, express)
                         res.send({success: false, message: err});
                         return;
                     }
-                    res.send({success: true, message:'New entry created'});
+                    res.send({success: true, message:'New entry created', id: entry._id});
                 });
             }
             else
@@ -223,7 +331,7 @@ module.exports = function(app, express)
 
     });
 
-    // ·¢Ìû×Ó£¬Ğ´ÃèÊö
+    // å‘å¸–å­ï¼Œå†™æè¿°
     api.post('/new/desc/:id', function(req,res)
     {
         Entry.findById(req.params.id).select('desc').exec(function(err, entry)
@@ -241,12 +349,12 @@ module.exports = function(app, express)
                     res.send({success: false, message: err});
                     return;
                 }
-                res.send({success: true, message:'Description added'});
+                res.send({success: true, message:'Description added', id: entry._id});
             });
         });
     });
 
-    // ·¢Ìû×Ó£¬Ğ´ÏÂ×Ô¼ºÏëĞ´µÄÄÚÈİ
+    // å‘å¸–å­ï¼Œå†™ä¸‹è‡ªå·±æƒ³å†™çš„å†…å®¹
     api.post('/new/content/:id', function(req,res)
     {
         Entry.findById(req.params.id).select('content').exec(function(err, entry)
@@ -264,12 +372,12 @@ module.exports = function(app, express)
                     res.send({success: false, message: err});
                     return;
                 }
-                res.send({success: true, message:'Content added'});
+                res.send({success: true, message:'Content added', id: entry._id});
             });
         });
     });
 
-    // ·¢Ìû×Ó£¬ÉÏ´«Í¼Æ¬--ÔÙËµ
+    // å‘å¸–å­ï¼Œä¸Šä¼ å›¾ç‰‡--å†è¯´
     api.post('/new/pic/:id', function(req,res)
     {
         Entry.findById(req.params.id).select('pic_lines pic_count completed').exec(function(err, entry)
@@ -279,7 +387,7 @@ module.exports = function(app, express)
                 res.send({success: false, message: err});
                 return;
             }
-            // TODO: ¸ù¾İÉÏ´«Í¼Æ¬¸üĞÂpiclinkºÍ¼ÆÊıÆ÷£¬Í¬Ê±Íê³ÉÌû×ÓÉú³É
+            // TODO: æ ¹æ®ä¸Šä¼ å›¾ç‰‡æ›´æ–°piclinkå’Œè®¡æ•°å™¨ï¼ŒåŒæ—¶å®Œæˆå¸–å­ç”Ÿæˆ
 
             entry.completed = true;
 
@@ -290,12 +398,12 @@ module.exports = function(app, express)
                     res.send({success: false, message: err});
                     return;
                 }
-                res.send({success: true, message:'New entry completed'});
+                res.send({success: true, message:'New entry completed', id: entry._id});
             });
         });
     });
 
-    // ±àĞ´ÆÀÂÛ
+    // ç¼–å†™è¯„è®º
     api.post('/comment/:id', function(req,res)
     {
         Entry.findById(req.params.id).select('count_of_comments completed').exec(function(err,entry)
@@ -361,8 +469,54 @@ module.exports = function(app, express)
 
     });
 
-    // ±à¼­Ìû×Ó -- Ò²ÊÇ·ÖÎª±à¼­titleĞÅÏ¢£¬descĞÅÏ¢£¬contentĞÅÏ¢£¬Í¼Æ¬ĞÅÏ¢Ò»¹²ËÄ´ó¿é
-    // ±à¼­±êÌâºÍ¼Û¸ñ
+    // ç¼–è¾‘å¸–å­ -- ä¹Ÿæ˜¯åˆ†ä¸ºç¼–è¾‘titleä¿¡æ¯ï¼Œdescä¿¡æ¯ï¼Œcontentä¿¡æ¯ï¼Œå›¾ç‰‡ä¿¡æ¯ä¸€å…±å››å¤§å—
+
+    // é™¤äº†å›¾ç‰‡å¤–ï¼Œç¼–è¾‘æ•´ä¸ªå¸–å­
+    api.post('/edit/all/:id', function(req,res)
+    {
+        Entry.findById(req.params.id).exec(function(err, entry)
+        {
+            if(err)
+            {
+                res.send({success: false, message: err});
+                return;
+            }
+            if(entry)
+            {
+                var verified = entry.verifyCreator(req.decoded.id);
+                if(verified)
+                {
+                    entry.title = req.body.title;
+                    entry.price = req.body.price;
+                    entry.desc = req.body.desc;
+                    entry.contact = req.body.contact;
+                    entry.content = req.body.content;
+                    entry.time_of_last_edit = Date.now();
+                    entry.markModified('time_of_last_edit');
+
+                    entry.save(function(err)
+                    {
+                        if(err)
+                        {
+                            res.send({success: false, message: err});
+                            return;
+                        }
+                        res.send({success: true, message:'Edit success', id:entry.id});
+                    });
+                }
+                else
+                {
+                    res.send({success:false, message:'No authority to edit this entry'});
+                    return;
+                }
+            }
+            else
+            {
+                res.status(404).send({success: false, message:'No entry found'});
+            }
+        });
+    });
+    // ç¼–è¾‘æ ‡é¢˜å’Œä»·æ ¼
     api.post('/edit/title/:id', function(req,res)
     {
         Entry.findById(req.params.id).select('creator title price time_of_last_edit').exec(function(err, entry)
@@ -405,7 +559,7 @@ module.exports = function(app, express)
         });
     });
 
-    // ±à¼­ÃèÊöĞÅÏ¢£¬¼´desc
+    // ç¼–è¾‘æè¿°ä¿¡æ¯ï¼Œå³desc
     api.post('/edit/desc/:id', function(req,res)
     {
         Entry.findById(req.params.id).select('creator desc time_of_last_edit').exec(function(err, entry)
@@ -446,9 +600,9 @@ module.exports = function(app, express)
         });
     });
 
-    // ±à¼­Í¼Æ¬£¬ĞèÒªÌí¼ÓÍ¼Æ¬ºÍÉ¾³ıÍ¼Æ¬Á½¸öAPI£¬ÔİÊ±²»Ğ´
+    // ç¼–è¾‘å›¾ç‰‡ï¼Œéœ€è¦æ·»åŠ å›¾ç‰‡å’Œåˆ é™¤å›¾ç‰‡ä¸¤ä¸ªAPIï¼Œæš‚æ—¶ä¸å†™
 
-    // ±à¼­ÄÚÈİ
+    // ç¼–è¾‘å†…å®¹
     api.post('/edit/content/:id', function(req,res)
     {
         Entry.findById(req.params.id).select('creator content time_of_last_edit').exec(function(err, entry)
@@ -492,7 +646,7 @@ module.exports = function(app, express)
         });
     });
 
-    // É¾³ıÌû×Ó -- É¾³ıÌû×Ó£¬²¢Í¬Ê±É¾³ıÏàÓ¦µÄÍ¼Æ¬£¬ÒÔ¼°ÆÀÂÛ
+    // åˆ é™¤å¸–å­ -- åˆ é™¤å¸–å­ï¼Œå¹¶åŒæ—¶åˆ é™¤ç›¸åº”çš„å›¾ç‰‡ï¼Œä»¥åŠè¯„è®º
     api.post('/delete/:id', function(req,res)
     {
         Entry.findById(req.params.id).exec(function(err,entry)
@@ -519,9 +673,9 @@ module.exports = function(app, express)
                 });
                 //console.log('Entry Deleted');
 
-                // TODO: Í¼Æ¬É¾³ı
+                // TODO: å›¾ç‰‡åˆ é™¤
 
-                // É¾³ıÆÀÂÛ
+                // åˆ é™¤è¯„è®º
                 Comment.remove({target: req.params.id}, function(err)
                 {
                     if(err)
