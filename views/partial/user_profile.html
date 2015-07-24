@@ -1,12 +1,18 @@
-<div>
-    <a href="/">回首页</a>
-    <a href="/user/edit">编辑信息</a>
-    <strong ng-if="!Profile.success_profile">{{Profile.error}}</strong>
-    <ul ng-if="Profile.success_profile">
-        <li>用户名：{{Profile.profile.username}}</li>
-        <li>姓名：{{Profile.profile.realname}}</li>
-        <li>联系方式：{{Profile.profile.contact}}</li>
-        <li>电子邮箱：{{Profile.profile.email}}</li>
-    </ul>
-    <a href="/list_self/{{Profile.profile._id}}/1">查看已发布的帖子</a>
+<div class="panel panel-primary">
+    <div class="panel-heading"><h4>个人信息</h4></div>
+    <div class="panel-body">
+        <strong ng-if="!Profile.success_profile">{{Profile.error}}</strong>
+        <dl ng-if="Profile.success_profile" class="dl-horizontal">
+            <dt>用户名：</dt>
+            <dd>{{Profile.profile.username}}</dd>
+            <dt>真实姓名：</dt>
+            <dd>{{Profile.profile.realname}}</dd>
+            <dt>电话号码：</dt>
+            <dd>{{Profile.profile.contact}}</dd>
+            <dt>电子邮箱：</dt>
+            <dd>{{Profile.profile.email}}</dd>
+            <dd><a href="/user/edit">编辑信息</a></dd>
+            <dd><a ng-if="Profile.success_profile" href="/list_self/{{Profile.profile._id}}/1">查看已发布的帖子</a></dd>
+        </dl>
+    </div>
 </div>

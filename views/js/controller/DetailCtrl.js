@@ -7,6 +7,7 @@ angular.module('DetailCtrl', [])
         var vm = this;
         vm.success_entry = false;
         vm.success_comment = false;
+        vm.success_page = false;
         vm.entry = {};
         vm.comments = {};
         vm.message_entry = '拉取内容，请稍候...';
@@ -16,6 +17,7 @@ angular.module('DetailCtrl', [])
         vm.page_current = 1;
         vm.pages = 0;
         vm.page_arr = [];
+        vm.check_time_interval = '';
 
         var RetrieveComments = function(current_page)
         {
@@ -25,12 +27,14 @@ angular.module('DetailCtrl', [])
             $http.get('/api/entry/comment/' + $routeParams.id + '/' + vm.page_current)
                 .success(function(data)
                 {
+                    vm.success_page = data.success;
                     vm.success_comment = data.success;
                     vm.comments = data.comments;
                     vm.message_comment = data.message;
                 })
                 .error(function(data)
                 {
+                    vm.success_page = data.success;
                     vm.success_comment = data.success;
                     vm.message_comment = data.message;
                     vm.comments = {};
@@ -94,8 +98,44 @@ angular.module('DetailCtrl', [])
                     vm.success_entry = data.success;
                     vm.entry = data.entry;
                     vm.message_entry = data.message;
+                    var last_read_time = data.last_read_time;
                     vm.entryID = vm.entry._id;
                     //console.log('帖子ID: ' + vm.entryID);
+
+                    // 处理最后查看时间
+                    var t_last = new Date(Date.parse(last_read_time));
+                    var t_now = new Date(Date.now());
+                    var d_m_second = parseInt(t_now.getTime() - t_last.getTime());
+                    //console.log('相隔时间，按毫秒算：' + d_m_second);
+                    // 月份
+                    if((d_m_second / (1000*3600*24*30)) >= 1)
+                    {
+                        vm.check_time_interval = parseInt((d_m_second / (1000*3600*24))) + '月';
+                    }
+                    // 天数
+                    else if((d_m_second / (1000*3600*24)) >= 1)
+                    {
+                        vm.check_time_interval = parseInt((d_m_second / (1000*3600*24))) + '天';
+                    }
+                    // 按小时
+                    else if((d_m_second / (1000 * 3600)) >= 1)
+                    {
+                        vm.check_time_interval = parseInt((d_m_second / (1000*3600))) + '小时';
+                    }
+                    // 按分钟
+                    else if((d_m_second / (1000 * 60)) >= 1)
+                    {
+                        vm.check_time_interval = parseInt((d_m_second / (1000*60))) + '分钟';
+                    }
+                    // 秒？
+                    else if((d_m_second / (1000)) >= 1)
+                    {
+                        vm.check_time_interval = parseInt((d_m_second / (10000))) + '秒';
+                    }
+                    else
+                    {
+                        vm.check_time_interval = '1秒';
+                    }
                 })
                 .error(function(data, status)
                 {
@@ -120,7 +160,7 @@ angular.module('DetailCtrl', [])
                         if(vm.entry.creator == vm.userID)
                         {
                             vm.can_edit = true;
-                            console.log('当前用户可以编辑帖子');
+                            //console.log('当前用户可以编辑帖子');
                         }
                     });
             }
@@ -153,6 +193,23 @@ angular.module('DetailCtrl', [])
 
             vm.success_comment = false;
             RetrieveComments(page);
+        };
+
+        vm.nextPage = function()
+        {
+            var nextPage_num = parseInt(vm.page_current) + 1;
+            //console.log(nextPage_num);
+            if(nextPage_num <= vm.pages)
+            {
+                vm.pullComments(nextPage_num);
+            }
+        };
+        vm.prevPage = function()
+        {
+            var prevPage_num = parseInt(vm.page_current) - 1;
+            if(prevPage_num <= 1)
+                prevPage_num = 1;
+            vm.pullComments(prevPage_num);
         };
 
         // Resolve promise

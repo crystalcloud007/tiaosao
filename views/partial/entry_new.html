@@ -1,27 +1,50 @@
-<div>
-    <a href="/">放弃并回到首页</a>
-    <form name="new_entry_form">
-        <strong>主要类型：</strong>
-        <select ng-model="NewEntry.select_main" ng-options="item.dis_name for item in NewEntry.menu_items" ng-required="true" ng-click="NewEntry.changeMain()">
-            选择主要类型
-        </select>
-        <br/>
-        <strong ng-if="NewEntry.entry.cate_main">次要类型：</strong>
-        <select ng-if="NewEntry.entry.cate_main" ng-model="NewEntry.select_sub" ng-required="true" ng-options="item.dis_name for item in NewEntry.select_main.subs" ng-click="NewEntry.changeSub()">
-            选择次要类型
-        </select>
-        <br/>
-
-        标题: <input type="text" ng-model="NewEntry.entry.title" placeholder="标题" ng-required="true"/><br/>
-        价格: <input type="number" ng-model="NewEntry.entry.price" placeholder="价格" ng-required="true"/><br/>
-        <ul ng-show="NewEntry.entry.cate_sub">业务描述-真实应用中会随着业务类型而改变
-            <li>描述1：<input type="text" ng-model="NewEntry.entry.desc.a" placeholder="描述1" ng-required="true"></li>
-            <li>描述2：<input type="text" ng-model="NewEntry.entry.desc.b" placeholder="描述2" ng-required="true"></li>
-            <li>描述3：<input type="text" ng-model="NewEntry.entry.desc.c" placeholder="描述3" ng-required="true"></li>
-        </ul>
-        内容：
-        <textarea rows="10" cols="100" ng-model="NewEntry.entry.content" ng-required="true">写下具体内容</textarea><br/>
-        <input ng-disabled="new_entry_form.$invalid" type="submit" value="提交" ng-click="NewEntry.newEntry()"/><input type="reset" value="清空">
-
-    </form>
+<div class="panel panel-primary">
+    <div class="panel-heading"><h5>新建帖子</h5></div>
+    <div class="panel-body">
+        <form name="new_entry_form">
+            <div class="form-group">
+                <label for="input_cate_main">选择主要类型：</label>
+                <select id="input_cate_main" ng-model="NewEntry.select_main" ng-options="item.dis_name for item in NewEntry.menu_items" ng-required="true" ng-click="NewEntry.changeMain()">
+                    选择类型
+                </select>
+            </div>
+            <div class="form-group" ng-if="NewEntry.entry.cate_main">
+                <label for="input_cate_sub">选择分支类型：</label>
+                <select id="input_cate_sub" ng-model="NewEntry.select_sub" ng-required="true" ng-options="item.dis_name for item in NewEntry.select_main.subs" ng-click="NewEntry.changeSub()">
+                    选择类型
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="input_title">标题：</label>
+                <input id="input_title" type="text" ng-model="NewEntry.entry.title" placeholder="标题" ng-required="true"/>
+            </div>
+            <div class="form-group">
+                <label for="input_price">价格：</label>
+                <input id="input_price" type="number" ng-model="NewEntry.entry.price" placeholder="价格" ng-required="true"/>
+            </div>
+            <div class="form-group" ng-show="NewEntry.entry.cate_sub">
+                <p>业务描述-真实应用中会随着业务类型而改变：</p>
+                <label for="input_desc1">描述1：</label>
+                <input id="input_desc1" type="text" ng-model="NewEntry.entry.desc.a" placeholder="描述1" ng-required="true"/>
+            </div>
+            <div class="form-group" ng-show="NewEntry.entry.cate_sub">
+                <label for="input_desc2">描述2：</label>
+                <input id="input_desc2" type="text" ng-model="NewEntry.entry.desc.b" placeholder="描述2" ng-required="true"/>
+            </div>
+            <div class="form-group" ng-show="NewEntry.entry.cate_sub">
+                <label for="input_desc3">描述3：</label>
+                <input id="input_desc3" type="text" ng-model="NewEntry.entry.desc.c" placeholder="描述3" ng-required="true"/>
+            </div>
+            <div class="form-group">
+                <label for="input_content">具体内容：</label>
+            </div>
+            <div class="form-group">
+                <textarea id="input_content" rows="10" cols="100" ng-model="NewEntry.entry.content" ng-required="true">写下具体内容</textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" ng-disabled=new_entry_form.$invalid" ng-click="NewEntry.newEntry()" class="btn btn-primary" value="提交">
+                <input type="reset" class="btn btn-default" value="清空">
+            </div>
+        </form>
+    </div>
 </div>

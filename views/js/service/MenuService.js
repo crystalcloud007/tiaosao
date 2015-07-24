@@ -9,18 +9,18 @@ angular.module('MenuService', [])
         menuFac.items =
             [
                 //all :
-                {
+                /*{
                     dis_name:'全部',
                     value:'all',
                     subs: [{dis_name:'全部', value:'all'}]
-                },
+                },*/
                 //real_estate:
                 {
                     dis_name: '房产',
                     value:'real_estate',
                     subs:
                         [
-                            {dis_name:'全部', value:'all'},
+                            //{dis_name:'全部', value:'all'},
                             {dis_name:'出租', value:'rent'},
                             {dis_name:'出售', value:'sale'},
                             {dis_name:'购买', value:'buy'}
@@ -32,7 +32,7 @@ angular.module('MenuService', [])
                     value:'house_work',
                     subs:
                         [
-                            {dis_name:'全部', value:'all'},
+                            //{dis_name:'全部', value:'all'},
                             {dis_name:'清洁',value:'clean'},
                             {dis_name:'幼儿看护', value:'baby_sitting'}
                         ]
@@ -43,7 +43,7 @@ angular.module('MenuService', [])
                     value:'second_hand',
                     subs:
                         [
-                            {dis_name:'全部', value:'all'},
+                            //{dis_name:'全部', value:'all'},
                             {dis_name:'电脑', value:'pc'},
                             {dis_name:'手机', value:'cell_phone'}
                         ]

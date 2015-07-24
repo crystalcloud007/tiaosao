@@ -1,10 +1,25 @@
 <div>
     <h3>这里是主页的位置，具体显示内容除了菜单以外，还需要另行确认。</h3>
-    <a ng-if="Home.isLoggedIn" href="/new_entry">新建帖子</a><br/>
-    <div ng-repeat="item_main in Home.menu_items">
-        {{item_main.dis_name}}
-        <ul ng-repeat="item_sub in item_main.subs">
-            <li><a href="/list/{{item_main.value}}/{{item_sub.value}}/1">{{item_sub.dis_name}}</a></li>
+    <!--ul ng-repeat="item_main in Home.menu_items">
+        <li ng-if="$first">
+            <a href="/list/all/all/1">全部分类（仅测试使用）</a>
+        </li>
+        <li>
+            <dl class="dl-horizontal" ng-repeat="item_sub in item_main.subs">
+                <dt ng-if="$first">{{item_main.dis_name}}</dt>
+                <dd>
+                    <a href="/list/{{item_main.value}}/{{item_sub.value}}/1">{{item_sub.dis_name}}</a>
+                </dd>
+            </dl>
+        </li>
+    </ul-->
+    <ul class="container" ng-repeat="item_main in Home.menu_items">
+        <li ng-if="$first">
+            <a href="/list/all/all/1">全部分类（仅测试使用）</a>
+        </li>
+        <ul class="breadcrumb">
+            <li>{{item_main.dis_name}}：</li>
+            <li ng-repeat="item_sub in item_main.subs" style="display:inline;"><a href="/list/{{item_main.value}}/{{item_sub.value}}/1">{{item_sub.dis_name}}</a></li>
         </ul>
-    </div>
+    </ul>
 </div>

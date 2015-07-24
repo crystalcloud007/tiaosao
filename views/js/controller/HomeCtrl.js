@@ -4,7 +4,7 @@
 angular.module('HomeCtrl',[])
     // 主页菜单项，所有项目都是一个二元体，由name和value组成
     // value用于显示在网页上，name用于记录在数据库中，或者查询使用。
-    .controller('HomeController', function($http, $rootScope, $location, Auth, MenuItem)
+    .controller('HomeController', function($http, $rootScope, $location, $window, Auth, MenuItem)
     {
         var vm = this;
         vm.password = '';
@@ -12,6 +12,7 @@ angular.module('HomeCtrl',[])
         {
             username:'',
             password:'',
+            password_check:'',
             realname:'',
             contact:'',
             email:''
@@ -57,26 +58,33 @@ angular.module('HomeCtrl',[])
         vm.signup = function()
         {
             vm.processing = true;
-            $http.post('/api/user/signup',
-                {
-                    username: vm.signupData.username,
-                    password: vm.signupData.password,
-                    realname: vm.signupData.realname,
-                    contact: vm.signupData.contact,
-                    email: vm.signupData.email,
-                })
-                .success(function(data)
-                {
-                    if(data.success)
+            if(vm.signupData.password == vm.signupData.password_check)
+            {
+                $http.post('/api/user/signup',
                     {
-                        $window.localStorage.setItem('token', data.token);
-                        $location.path('/');
-                    }
-                    else
+                        username: vm.signupData.username,
+                        password: vm.signupData.password,
+                        realname: vm.signupData.realname,
+                        contact: vm.signupData.contact,
+                        email: vm.signupData.email,
+                    })
+                    .success(function(data)
                     {
-                        vm.error = data.message;
-                    }
-                });
+                        if(data.success)
+                        {
+                            $window.localStorage.setItem('token', data.token);
+                            $location.path('/');
+                        }
+                        else
+                        {
+                            vm.error = data.message;
+                        }
+                    });
+            }
+            else
+            {
+                vm.error = '两次输入密码不同';
+            }
         };
 
         vm.doLogin = function()

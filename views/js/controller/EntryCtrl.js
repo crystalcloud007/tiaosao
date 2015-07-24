@@ -94,6 +94,16 @@ angular.module('EntryCtrl',[])
                 $location.path(toRoute);
             }
         };
+        vm.prevPage = function()
+        {
+            var prevPage_num = parseInt(vm.page_current) - 1;
+            if(prevPage_num <= 1)
+                prevPage_num = 1;
+            //console.log(nextPage_num);
+            var toRoute = '/list/' + vm.cate_main + '/' + vm.cate_sub + '/' + prevPage_num;
+            //console.log(toRoute);
+            $location.path(toRoute);
+        };
 
         // Resolve promise.
         RetrieveList();
@@ -198,10 +208,17 @@ angular.module('EntryCtrl',[])
         vm.menu_items = JSON.parse(MenuItem.copyByJson());
         vm.select_main={};
         vm.select_sub={};
+        vm.has_main = false;
+        vm.has_sub = false;
         vm.entry = {};
         var shiftCategory = function()
         {
             vm.menu_items.shift();
+            for(var i = 0; i < vm.menu_items.length; i++)
+            {
+                vm.menu_items[i].subs.shift();
+                //console.log(vm.menu_items[i]);
+            }
             //console.log(vm.menu_items);
             //console.log('shifting....');
         };
@@ -233,22 +250,18 @@ angular.module('EntryCtrl',[])
         {
             vm.entry.cate_main = vm.select_main.value;
             //console.log(vm.entry.cate_main);
-            // 一定要检查第一项是不是all，不然就会随着用户多次点击该select，把所有subs主次删除
-            if(vm.select_main.subs && vm.select_main.subs[0].value == 'all')
-            {
-                vm.select_main.subs.shift();
-            }
-            //console.log(vm.select_main);
+            vm.has_main = true;
             vm.entry.cate_sub = null;
         };
         vm.changeSub = function()
         {
             //console.log(vm.select_sub);
             vm.entry.cate_sub = vm.select_sub.value;
+            vm.has_sub = true;
             //console.log(vm.entry.cate_sub);
         };
 
-        shiftCategory();
+        //shiftCategory();
     })
     .controller('EditEntryController', function($http, $routeParams, $location)
     {

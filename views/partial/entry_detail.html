@@ -1,40 +1,66 @@
-<a href="/">回首页</a>
 <p ng-hide="Detail.success_entry">{{Detail.message_entry}}</p>
-<div ng-show="Detail.success_entry">
-    <h2>{{Detail.entry.title}}</h2>
-    发布人：{{Detail.entry.creator_name}}
-    <a href="list_self/{{Detail.entry.creator}}/1">查看此人发布所有帖子</a><br/>
-    联系方式：{{Detail.entry.contact}}<p/>
-    价格：{{Detail.entry.price}}<p/>
-    查看次数:{{Detail.entry.count_of_read}}<p/>
-    评论数：{{Detail.entry.count_of_comments}}<p/>
-    <ul>类型描述栏目：--真实应用情况下会随着业务不同而不同
-        <li>栏目1：{{Detail.entry.desc.a}}</li>
-        <li>栏目2：{{Detail.entry.desc.b}}</li>
-        <li>栏目3：{{Detail.entry.desc.c}}</li>
-    </ul>
-    内容：<p/>{{Detail.entry.content}}<p/>
-    最后查看时间：{{Detail.entry.time_of_last_read}}
-</div>
-<a ng-if="Detail.can_edit" href="#/edit_entry/{{Detail.entryID}}">编辑帖子</a><hr/>
-<div ng-if="Detail.isLoggedIn&&Detail.success_comment">
-    <form>发表评论：
-        <textarea rows="5" cols="50" ng-model="Detail.comment_content">写下评论</textarea>
-        <input type="submit" value="发表" ng-click="Detail.AddComment()"/><input type="reset" value="清空">
-    </form>
+
+<div ng-show="Detail.success_entry" class="panel panel-primary">
+    <div class="panel-heading"><h3>{{Detail.entry.title}}</h3></div>
+    <div class="panel-body">
+        <p>
+        <h4>发布人：{{Detail.entry.creator_name}} <small><a href="list_self/{{Detail.entry.creator}}/1">查看此人发布所有帖子</a></small></h4>
+        </p>
+        <p><h4>电话号码：{{Detail.entry.contact}}</h4></p>
+        <p><h4>价格：{{Detail.entry.price}}</h4></p>
+        <p>
+        <h4>类型描述，真实应用情况下会随着业务不同而不同：</h4>
+        <ul>
+            <li><h4>栏目1：{{Detail.entry.desc.a}}</h4></li>
+            <li><h4>栏目2：{{Detail.entry.desc.b}}</h4></li>
+            <li><h4>栏目3：{{Detail.entry.desc.c}}</h4></li>
+        </ul>
+        </p>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4>具体内容</h4></div>
+            <div class="panel-body">
+                <p><h4>{{Detail.entry.content}}</h4></p>
+            </div>
+        </div>
+        <p>该信息已被浏览{{Detail.entry.count_of_read}}次，距上次浏览已经过了{{Detail.check_time_interval}}。</p>
+        <p>已经有{{Detail.entry.count_of_comments}}条评论。</p>
+        <a ng-if="Detail.entry.creator==Detail.userID" href="/edit_entry/{{Detail.entryID}}">编辑帖子</a>
+    </div>
 </div>
 <p ng-hide="Detail.success_comment">{{Detail.message_comment}}</p>
-<ul ng-show="Detail.success_comment" ng-repeat="comment in Detail.comments">
-    <li>
-        评论人：{{comment.creator_name}}<p/>
-        评论于：{{comment.time_of_creation}}<p/>
-        内容：<p/>
-        {{comment.content}}
-    </li>
-</ul>
-<a href="javascript:void(0)" ng-if="Detail.page_current > 1" ng-click="Detail.pullComments(1)">第一页</a>
-<div ng-show="Detail.success_comment" ng-repeat="page in Detail.page_arr">
-    <a href="javascript:void(0)" ng-click="Detail.pullComments(page)" ng-if="page!=Detail.page_current">{{page}}</a>
-    <strong ng-if="page==Detail.page_current">{{page}}</strong>
+<div class="panel panel-default" ng-show="Detail.success_comment" ng-repeat="comment in Detail.comments">
+    <div class="panel-heading">{{comment.creator_name}}评论说：</div>
+    <div class="panel-body">
+        <p>{{comment.content}}</p>
+    </div>
 </div>
-<a href="javascript:void(0)" ng-if="Detail.page_current < Detail.pages" ng-click="Detail.pullComments(Detail.page_current)">下一页</a>
+<nav ng-if="Detail.success_page">
+    <ul class="pagination">
+        <li ng-repeat="page in Detail.page_arr">
+            <a ng-if="$first" href="javascript:void(0)" ng-click="Detail.pullComments(1)">首页</a>
+            <a ng-if="$first && Detail.page_current > 1" href="javascript:(0)" ng-click="Detail.prevPage()" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            <a href="javascript:(0)" ng-if="page!=Detail.page_current" ng-click="Detail.pullComments(page)">{{page}}</a>
+            <a class="disabled" href="javascript:void(0)" ng-if="page==Detail.page_current">{{page}}<span class="sr-only">(current)</span></a>
+            <a ng-if="$last && Detail.page_current < Detail.pages" href="javascript:(0)" ng-click="Detail.nextPage()" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+            <a ng-if="$last && Detail.page_current < Detail.pages" href="javascript:(0)" ng-click="Detail.pullComments(Detail.pages)">末页</a>
+        </li>
+    </ul>
+</nav>
+<div ng-if="Detail.isLoggedIn&&Detail.success_comment">
+    <form>
+        <div class="form-group">
+            <label for="input_comment">发表评论：</label>
+        </div>
+        <div class="form-group">
+            <textarea id="input_comment" rows="5" cols="50" ng-model="Detail.comment_content">写下评论</textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success" ng-click="Detail.AddComment()">发表</button>
+            <button type="reset" class="btn btn-default">清空</button>
+        </div>
+    </form><hr/>
+</div>

@@ -184,6 +184,7 @@ module.exports = function(app, express)
             {
                 // 记录观察次数
                 entry.count_of_read += 1;
+                var last_read_time = entry.time_of_last_read;
                 entry.time_of_last_read = Date.now();
                 entry.markModified('time_of_last_read');
                 entry.save(function(err)
@@ -194,7 +195,7 @@ module.exports = function(app, express)
                         return;
                     }
                 });
-                res.send({success: true, entry: entry});
+                res.send({success: true, entry: entry, last_read_time: last_read_time});
 
             }
             else

@@ -1,15 +1,33 @@
-<div>
-    <a href="/">回首页</a>
+<div class="col-sm-4">
+    <h2>注册</h2>
     {{Home.error}}
     <form name="signup_form">
-        <ul>
-            <li>用户名：<input type="text" ng-model="Home.signupData.username" placeholder="填写用户名" required="required"/></li>
-            <li>密码：<input type="password" ng-model="Home.signupData.password" required="required"/></li>
-            <li>真实姓名：<input type="text" ng-model="Home.signupData.realname" placeholder="填写真实姓名" required="required"/></li>
-            <li>联系方式：<input type="number" ng-model="Home.signupData.contact" placeholder="常用联系方式" required="required"/></li>
-            <li>电子邮箱：<input type="text" ng-model="Home.signupData.email" placeholder="常用邮箱地址" required="required"/></li>
-        </ul>
-        <input type="submit" value="注册" ng-click="Home.signup()"/>
-        <input type="reset" value="清空">
+        <div class="form-group">
+            <label for="input_username">用户名：</label>
+            <input id="input_username" type="text" class="form-control" ng-model="Home.signupData.username" placeholder="填写用户名" ng-required="true"/>
+        </div>
+        <div class="form-group">
+            <label for="input_password">密码：</label>
+            <input id="input_password" type="password" class="form-control" ng-model="Home.signupData.password" placeholder="填写密码" ng-required="true"/>
+        </div>
+        <div class="form-group">
+            <label for="input_password_check">确认密码：</label>
+            <input id="input_password_check" type="password" class="form-control" ng-model="Home.signupData.password_check" placeholder="确认密码" ng-required="true"/>
+        </div>
+        <div class="form-group">
+            <label for="input_realname">真实姓名：</label>
+            <input id="input_realname" type="text" class="form-control" ng-model="Home.signupData.realname" placeholder="填写真实姓名" ng-required="true"/>
+        </div>
+        <div class="form-group">
+            <label for="input_contact">电话号码：</label>
+            <input id="input_contact" type="number" class="form-control" ng-model="Home.signupData.contact" placeholder="常用电话号码" ng-required="true"/>
+        </div>
+        <div class="form-group">
+            <label for="input_email">电子邮箱：</label>
+            <input id="input_email" type="text" class="form-control" ng-model="Home.signupData.email" placeholder="常用邮箱地址" ng-required="true"/>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" ng-click="Home.signup()">登录</button>
+        </div>
     </form>
 </div>
