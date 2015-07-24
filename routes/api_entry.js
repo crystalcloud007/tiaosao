@@ -16,7 +16,7 @@ module.exports = function(app, express)
     // 得到帖子总数
     api.get('/entry_count/:cate_main/:cate_sub', function(req,res)
     {
-        console.log(req.params.cate_main + ' || ' + req.params.cate_sub);
+        //console.log(req.params.cate_main + ' || ' + req.params.cate_sub);
         if(req.params.cate_main == 'all')
         {
             Entry.count({completed: true}, function(err,count)
@@ -69,6 +69,42 @@ module.exports = function(app, express)
                 return;
             }
             var page_count = Math.ceil(count / config.comment_per_page);
+            res.send({success: true, count: count, page_count: page_count});
+        });
+    });
+
+    // 根据发布者ID查看帖子
+    api.get('/list_self/:id/:page', function(req,res)
+    {
+        var pageNum = parseInt(req.params.page);
+        if(isNaN(pageNum))
+        {
+            res.status(404).send({success: false, message:'The page your required does NOT exist'});
+            return;
+        }
+        Entry.find({creator:req.params.id})
+            .select('category_main category_sub creator_name title price contact desc count_of_read count_of_comments')
+            .skip((pageNum - 1) * config.entries_per_page)
+            .limit(config.entries_per_page).exec(function(err, entries)
+            {
+                if(err)
+                {
+                    res.send({success: false, message:err});
+                    return;
+                }
+                res.send({success: true, entries: entries});
+            });
+    });
+    api.get('/entry_count_self/:id', function(req,res)
+    {
+        Entry.count({creator: req.params.id, completed: true}, function(err,count)
+        {
+            if(err)
+            {
+                res.status(500).send({success: false, message: err});
+                return;
+            }
+            var page_count = Math.ceil(count / config.entries_per_page);
             res.send({success: true, count: count, page_count: page_count});
         });
     });
@@ -234,6 +270,8 @@ module.exports = function(app, express)
             res.status(403).send({message: 'no token provided.'});
         }
     });
+
+
 
     // 发帖子，写全部内容 -- 图片尚未添加
     api.post('/new/all',function(req,res)

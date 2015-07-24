@@ -2,12 +2,12 @@
     <a href="/">放弃并回到首页</a>
     <form name="new_entry_form">
         <strong>主要类型：</strong>
-        <select ng-model="NewEntry.select_main" ng-options="item.value for item in NewEntry.menu_items" ng-required="true" ng-click="NewEntry.changeMain()">
+        <select ng-model="NewEntry.select_main" ng-options="item.dis_name for item in NewEntry.menu_items" ng-required="true" ng-click="NewEntry.changeMain()">
             选择主要类型
         </select>
         <br/>
         <strong ng-if="NewEntry.entry.cate_main">次要类型：</strong>
-        <select ng-if="NewEntry.entry.cate_main" ng-model="NewEntry.select_sub" ng-required="true" ng-options="item.value for item in NewEntry.select_main.subs" ng-click="NewEntry.changeSub()">
+        <select ng-if="NewEntry.entry.cate_main" ng-model="NewEntry.select_sub" ng-required="true" ng-options="item.dis_name for item in NewEntry.select_main.subs" ng-click="NewEntry.changeSub()">
             选择次要类型
         </select>
         <br/>

@@ -10,42 +10,42 @@ angular.module('MenuService', [])
             [
                 //all :
                 {
-                    value:'全部',
-                    name:'all',
-                    subs: [{value:'全部', name:'all'}]
+                    dis_name:'全部',
+                    value:'all',
+                    subs: [{dis_name:'全部', value:'all'}]
                 },
                 //real_estate:
                 {
-                    value: '房产',
-                    name:'real_estate',
+                    dis_name: '房产',
+                    value:'real_estate',
                     subs:
                         [
-                            {value:'全部', name:'all'},
-                            {value:'出租', name:'rent'},
-                            {value:'出售', name:'sale'},
-                            {value:'购买', name:'buy'}
+                            {dis_name:'全部', value:'all'},
+                            {dis_name:'出租', value:'rent'},
+                            {dis_name:'出售', value:'sale'},
+                            {dis_name:'购买', value:'buy'}
                         ]
                 },
                 //house_work:
                 {
-                    value:'家政',
-                    name:'house_work',
+                    dis_name:'家政',
+                    value:'house_work',
                     subs:
                         [
-                            {value:'全部', name:'all'},
-                            {value:'清洁',name:'clean'},
-                            {value:'幼儿看护', name:'baby_sitting'}
+                            {dis_name:'全部', value:'all'},
+                            {dis_name:'清洁',value:'clean'},
+                            {dis_name:'幼儿看护', value:'baby_sitting'}
                         ]
                 },
                 //second_hand:
                 {
-                    value:'二手物品',
-                    name:'second_hand',
+                    dis_name:'二手物品',
+                    value:'second_hand',
                     subs:
                         [
-                            {value:'全部', name:'all'},
-                            {value:'电脑', name:'pc'},
-                            {value:'手机', name:'cell_phone'}
+                            {dis_name:'全部', value:'all'},
+                            {dis_name:'电脑', value:'pc'},
+                            {dis_name:'手机', value:'cell_phone'}
                         ]
                 }
             ];

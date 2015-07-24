@@ -2,7 +2,8 @@
 <p ng-hide="Detail.success_entry">{{Detail.message_entry}}</p>
 <div ng-show="Detail.success_entry">
     <h2>{{Detail.entry.title}}</h2>
-    发布人：{{Detail.entry.creator_name}}<br/>
+    发布人：{{Detail.entry.creator_name}}
+    <a href="list_self/{{Detail.entry.creator}}/1">查看此人发布所有帖子</a><br/>
     联系方式：{{Detail.entry.contact}}<p/>
     价格：{{Detail.entry.price}}<p/>
     查看次数:{{Detail.entry.count_of_read}}<p/>

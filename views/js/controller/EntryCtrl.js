@@ -98,6 +98,98 @@ angular.module('EntryCtrl',[])
         // Resolve promise.
         RetrieveList();
     })
+    .controller('ListSelfController', function($http, $routeParams, $location)
+    {
+        var vm = this;
+        vm.success = false;
+        vm.success_page = false;
+        vm.entries={};
+        vm.pages = 0;
+        vm.page_current = 1;
+        vm.page_arr = [];
+        var RetrieveList = function()
+        {
+            //console.log('retrieving....');
+            $http.get('/api/entry/list_self/' + $routeParams.id + '/' + $routeParams.page_num)
+                .success(function(data)
+                {
+                    //console.log(data.success);
+                    vm.success = data.success;
+                    if(data.success)
+                    {
+                        vm.entries = data.entries;
+                        vm.cate_main = $routeParams.cate_main;
+                        vm.cate_sub = $routeParams.cate_sub;
+                    }
+                });
+            //console.log('getting page count....');
+            $http.get('/api/entry/entry_count_self/' + $routeParams.id)
+                .success(function(data)
+                {
+                    vm.page_arr = [];
+                    vm.success_page = data.success;
+                    if(data.success)
+                    {
+                        //console.log('应该有的页数是：' + data.page_count);
+
+                        vm.pages = data.page_count;
+                        // 此处，page_current变成字符串了
+                        vm.page_current = $routeParams.page_num;
+                        //console.log('当前页面：' + vm.page_current);
+
+                        // 处理页码逻辑
+                        vm.page_arr = [];
+                        if(vm.pages < 5)
+                        {
+                            for(var i = 1; i<=vm.pages; i++)
+                                vm.page_arr.push(i);
+                        }
+                        else
+                        {
+                            if(vm.page_current >= vm.pages - 4)
+                            {
+                                for(var i = vm.pages - 4; i <= vm.pages; i++)
+                                {
+                                    vm.page_arr.push(i);
+                                }
+                            }
+                            else
+                            {
+                                var page_max = parseInt(vm.page_current) + 4;
+                                //console.log('当前页面后四页：' + page_max);
+                                for(var i = parseInt(vm.page_current); i <= parseInt(vm.page_current) + 4; i++)
+                                {
+                                    vm.page_arr.push(i);
+                                }
+                                /*var current = parseInt(vm.page_current);
+                                 var index = 0;
+                                 while(index < 5)
+                                 {
+                                 vm.page_arr.push(current);
+                                 index++;
+                                 current++;
+                                 }*/
+                            }
+                        }
+                    }
+                });
+        };
+
+        vm.nextPage = function()
+        {
+            var nextPage_num = parseInt(vm.page_current) + 1;
+            //console.log(nextPage_num);
+            if(nextPage_num <= vm.pages)
+            {
+                var toRoute = '/list_self/' + nextPage_num;
+                //console.log(toRoute);
+                $location.path(toRoute);
+            }
+        };
+
+        // Resolve promise.
+        RetrieveList();
+    })
     .controller('NewEntryController', function($http, MenuItem, $location, $scope)
     {
         var vm = this;
@@ -139,10 +231,10 @@ angular.module('EntryCtrl',[])
 
         vm.changeMain = function()
         {
-            vm.entry.cate_main = vm.select_main.name;
+            vm.entry.cate_main = vm.select_main.value;
             //console.log(vm.entry.cate_main);
             // 一定要检查第一项是不是all，不然就会随着用户多次点击该select，把所有subs主次删除
-            if(vm.select_main.subs && vm.select_main.subs[0].name == 'all')
+            if(vm.select_main.subs && vm.select_main.subs[0].value == 'all')
             {
                 vm.select_main.subs.shift();
             }
@@ -152,7 +244,7 @@ angular.module('EntryCtrl',[])
         vm.changeSub = function()
         {
             //console.log(vm.select_sub);
-            vm.entry.cate_sub = vm.select_sub.name;
+            vm.entry.cate_sub = vm.select_sub.value;
             //console.log(vm.entry.cate_sub);
         };
 

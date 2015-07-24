@@ -2,10 +2,11 @@
     <a href="/">回首页</a>
     <a href="/user/edit">编辑信息</a>
     <strong ng-if="!Profile.success_profile">{{Profile.error}}</strong>
-    <ul>
+    <ul ng-if="Profile.success_profile">
         <li>用户名：{{Profile.profile.username}}</li>
         <li>姓名：{{Profile.profile.realname}}</li>
         <li>联系方式：{{Profile.profile.contact}}</li>
         <li>电子邮箱：{{Profile.profile.email}}</li>
     </ul>
+    <a href="/list_self/{{Profile.profile._id}}/1">查看已发布的帖子</a>
 </div>

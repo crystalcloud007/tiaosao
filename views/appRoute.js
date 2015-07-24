@@ -54,6 +54,12 @@ angular.module('appRoute',['ngRoute'])
                 controller: 'ListController',
                 controllerAs: 'List',
             })
+            .when('/list_self/:id/:page_num',
+            {
+                templateUrl: 'partial/entry_list.html',
+                controller: 'ListSelfController',
+                controllerAs: 'List',
+            })
             .when('/detail/:id',
             {
                 templateUrl:'partial/entry_detail.html',
