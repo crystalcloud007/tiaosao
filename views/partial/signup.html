@@ -1,33 +1,39 @@
 <div class="col-sm-4">
     <h2>注册</h2>
     {{Home.error}}
-    <form name="signup_form">
+    <form name="signup_form" ng-submit="Home.signup(signup_form.$valid)">
         <div class="form-group">
             <label for="input_username">用户名：</label>
             <input id="input_username" type="text" class="form-control" ng-model="Home.signupData.username" placeholder="填写用户名" ng-required="true"/>
+            <p ng-show="signup_form.input_username.$invalid">请填写用户名</p>
         </div>
         <div class="form-group">
             <label for="input_password">密码：</label>
             <input id="input_password" type="password" class="form-control" ng-model="Home.signupData.password" placeholder="填写密码" ng-required="true"/>
+            <p ng-show="signup_form.input_password.$invalid">请填写密码</p>
         </div>
         <div class="form-group">
             <label for="input_password_check">确认密码：</label>
             <input id="input_password_check" type="password" class="form-control" ng-model="Home.signupData.password_check" placeholder="确认密码" ng-required="true"/>
+            <p ng-show="signup_form.input_password_check.$invalid">两次填写须相同</p>
         </div>
         <div class="form-group">
             <label for="input_realname">真实姓名：</label>
             <input id="input_realname" type="text" class="form-control" ng-model="Home.signupData.realname" placeholder="填写真实姓名" ng-required="true"/>
+            <p ng-show="signup_form.input_realname.$invalid">请填写真实姓名</p>
         </div>
         <div class="form-group">
             <label for="input_contact">电话号码：</label>
             <input id="input_contact" type="number" class="form-control" ng-model="Home.signupData.contact" placeholder="常用电话号码" ng-required="true"/>
+            <p ng-show="signup_form.input_contact.$invalid">请填写电话号码</p>
         </div>
         <div class="form-group">
             <label for="input_email">电子邮箱：</label>
-            <input id="input_email" type="text" class="form-control" ng-model="Home.signupData.email" placeholder="常用邮箱地址" ng-required="true"/>
+            <input id="input_email" type="email" class="form-control" ng-model="Home.signupData.email" placeholder="常用邮箱地址" ng-required="true"/>
+            <p ng-show="signup_form.input_email.$invalid">请填写常用电子邮箱地址</p>
         </div>
         <div class="form-group">
-            <button class="btn btn-primary" ng-click="Home.signup()">登录</button>
+            <button class="btn btn-primary">注册</button>
         </div>
     </form>
 </div>

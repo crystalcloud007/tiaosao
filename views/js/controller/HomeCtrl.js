@@ -55,35 +55,42 @@ angular.module('HomeCtrl',[])
         };
 
 
-        vm.signup = function()
+        vm.signup = function(valid)
         {
-            vm.processing = true;
-            if(vm.signupData.password == vm.signupData.password_check)
+            if(valid)
             {
-                $http.post('/api/user/signup',
-                    {
-                        username: vm.signupData.username,
-                        password: vm.signupData.password,
-                        realname: vm.signupData.realname,
-                        contact: vm.signupData.contact,
-                        email: vm.signupData.email,
-                    })
-                    .success(function(data)
-                    {
-                        if(data.success)
+                vm.processing = true;
+                if(vm.signupData.password == vm.signupData.password_check)
+                {
+                    $http.post('/api/user/signup',
                         {
-                            $window.localStorage.setItem('token', data.token);
-                            $location.path('/');
-                        }
-                        else
+                            username: vm.signupData.username,
+                            password: vm.signupData.password,
+                            realname: vm.signupData.realname,
+                            contact: vm.signupData.contact,
+                            email: vm.signupData.email,
+                        })
+                        .success(function(data)
                         {
-                            vm.error = data.message;
-                        }
-                    });
+                            if(data.success)
+                            {
+                                $window.localStorage.setItem('token', data.token);
+                                $location.path('/');
+                            }
+                            else
+                            {
+                                vm.error = data.message;
+                            }
+                        });
+                }
+                else
+                {
+                    vm.error = '两次输入密码不同';
+                }
             }
             else
             {
-                vm.error = '两次输入密码不同';
+                vm.error = "内容输入有误";
             }
         };
 
