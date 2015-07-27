@@ -13,6 +13,35 @@ module.exports = function(app, express)
 {
     var api = express.Router();
 
+    // 测试排序
+    api.get('/entry_test', function(req,res)
+    {
+        // 测试排序
+        /*Entry.find({}).sort('-desc.a')
+        .select('category_main category_sub creator_name title price contact desc count_of_read count_of_comments')
+        .exec(function(err, entries)
+        {
+            if(err)
+            {
+                res.send({success: false, message: err});
+                return;
+            }
+            res.send({success: true, entries: entries});
+        });*/
+        // 测试按DESC中项目查找
+        Entry.find({'desc.a':'desc-a'})
+            .select('category_main category_sub creator_name title price contact desc count_of_read count_of_comments')
+            .exec(function(err, entries)
+            {
+                if(err)
+                {
+                    res.send({success: false, message: err});
+                    return;
+                }
+                res.send({success: true, entries: entries});
+            });
+    });
+
     // 得到帖子总数
     api.get('/entry_count/:cate_main/:cate_sub', function(req,res)
     {

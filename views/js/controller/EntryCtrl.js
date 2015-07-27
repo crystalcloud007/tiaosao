@@ -16,6 +16,9 @@ angular.module('EntryCtrl',[])
         vm.cate_sub = 'all';
         var RetrieveList = function()
         {
+            var hostName = $location.host();
+            var sub_domain_index = hostName.split('.')[0];
+            console.log('Host name: ' + hostName + ', index: ' + sub_domain_index + '.');
             //console.log('retrieving....');
             $http.get('/api/entry/list/' + $routeParams.cate_main + '/'
                         + $routeParams.cate_sub + '/' + $routeParams.page_num)

@@ -3,37 +3,48 @@
  */
 module.exports=
 {
-    // »ù±¾ÏîÄ¿
+    // åŸºæœ¬é¡¹ç›®
     database: 'mongodb://root:root123456@ds036648.mongolab.com:36648/tiaosao',
     secretKey: 'TiaoSaoWebSecretKey',
     port: process.env.PORT || 3000,
 
-    // ·µ»ØÊı¾İ
-    entries_per_page: 10,                      // Ã¿Ò³·µ»Ø¶àÉÙÌõÌû×Ó
-    comment_per_page: 5,                       // Ã¿Ò³ÏÔÊ¾¶ÅÉÙÌõ»ØÌû
+    // è¿”å›æ•°æ®
+    entries_per_page: 10,                      // æ¯é¡µè¿”å›å¤šå°‘æ¡å¸–å­
+    comment_per_page: 5,                       // æ¯é¡µæ˜¾ç¤ºæœå°‘æ¡å›å¸–
 
-    // ÎÄ¼ş
+    // æ–‡ä»¶
     file_upload_path: './public/tmp/',
     file_store_path: './public/upload/',
     file_trash_path: './public/trash/',
     file_admin_path: './adimn/',
     pic_upload_size: 2 * 1024 * 1024,
 
-    // ÓĞ¹ØµÈ¼¶
+    // æœ‰å…³ç­‰çº§
     level_user: {'common': 0, 'vip':1},
     level_entry: {'common': 0, 'vip': 1, 'long': 2},
     pic_count_max:{'common': 4, 'vip': 10},
     entry_lifespan: {'common': 7, 'vip': 15, long:'30'},
 
-    // ÒµÎñÀàĞÍ
-    work_category:
+    // åœ°ç‚¹ç´¢å¼•å’Œæ•°æ®åº“åœ°ç‚¹é¡¹ç›®è½¬æ¢
+    // ç›®å‰åªæœ‰åŒ—ä¸Šå¹¿æ·±å¤©äº”ä¸ªåŸå¸‚
+    location_index:
     {
-        'real-estate':{'name':'·¿²ú','rent':'×â·¿','sale':'Âô·¿','buy':'Âò·¿'},
-        'house-work':{'name':'¼ÒÕş','clean':'Çå½à'},
-        'mating':{'name':'½»ÓÑ','date':'Ô¼»á'},
+        'bj': {eng: 'Beijing',chn: 'åŒ—äº¬'},
+        'tj': {eng: 'Tianjin',chn: 'å¤©æ´¥'},
+        'sh': {eng: 'Shanghai', chn: 'ä¸Šæµ·'},
+        'gz': {eng: 'Guangzhou', chn: 'å¹¿å·'},
+        'sz': {eng: 'Shenzhen', chn: 'æ·±åœ³'},
     },
 
-    // ÊôĞÔ--Ëæ×ÅÑĞ·¢½ø¶ÈÔö¼Ó°É
+    // ä¸šåŠ¡ç±»å‹ -- åœ¨å‰ç«¯å³å¯ï¼Œåç«¯æ²¡æœ‰å¿…è¦åšè¿™ä¸ªäº‹æƒ…ã€‚
+    work_category:
+    {
+        'real-estate':{'name':'æˆ¿äº§','rent':'ç§Ÿæˆ¿','sale':'å–æˆ¿','buy':'ä¹°æˆ¿'},
+        'house-work':{'name':'å®¶æ”¿','clean':'æ¸…æ´'},
+        'mating':{'name':'äº¤å‹','date':'çº¦ä¼š'},
+    },
+
+    // å±æ€§--éšç€ç ”å‘è¿›åº¦å¢åŠ å§
     status_user: {'normal': 'normal', 'frozen': 'frozen'},
     status_entry: {'normal': 'normal', 'deleted': 'deleted'},
 }

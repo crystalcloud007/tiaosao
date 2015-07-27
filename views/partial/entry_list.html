@@ -26,6 +26,13 @@
         </tr>
     </table>
     <nav ng-if="List.success_page">
+        <ul class="pager">
+            <li><h5>第{{List.page_current}}页 / 共{{List.pages}}页</h5></li>
+            <li ng-if="List.page_current>1"><a href="javascript:void(0)" ng-click="List.prevPage()">上一页</a></li>
+            <li ng-if="List.page_current<List.pages"><a href="javascript:void(0)" ng-click="List.nextPage()">下一页</a></li>
+        </ul>
+    </nav>
+    <!--nav ng-if="List.success_page">
         <ul class="pagination">
             <li ng-repeat="page in List.page_arr">
                 <a ng-if="$first" href="/list/{{List.cate_main}}/{{List.cate_sub}}/1">首页</a>
@@ -40,6 +47,6 @@
                 <a ng-if="$last" href="/list/{{List.cate_main}}/{{List.cate_sub}}/{{List.pages}}">末页</a>
             </li>
         </ul>
-    </nav>
+    </nav-->
 </div>
 
