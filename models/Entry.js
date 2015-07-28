@@ -12,17 +12,20 @@ var Entry = new Schema(
         creator: {type: Schema.Types.ObjectId, ref:'User'},             // 创建者ID索引
         category_main: {type: String, required: true},                  // 业务主类别，查找的主键
         category_sub:{type: String, required: true},                    // 业务次类别，某业务下分类主键
-        //name_main:{type:String, required: true},                        // 主类别名称
-        //name_sub:{type:String, required: true},                         // 次类别名称
         creator_name: String,
-        title: String,
+        title: {type: String, required: true},
         price: Number,
-        contact: String,
+        region_prov: {type: String, required: true},
+        region_city: {type: String, required: true},
+        region_disc: {type: String, required: true},
+        contact_n: {type: String, required: true},
+        contact_p: {type: String, required: true},
         desc:Schema.Types.Mixed,
         pic_links: {type: [String], default:[]},
         pic_count: {type: Number, default: 0},
         content: {type: String ,default: ''},
-        completed: {type: Boolean, default: false},             // 若没有完成帖子（无论各种原因），都会标记为false，并在一定时间内删除。
+        //create_by_admin:{type:Boolean, default: false},                 // 是不是由工作人员批量上传的
+        completed: {type: Boolean, default: false},                     // 若没有完成帖子（无论各种原因），都会标记为false，并在一定时间内删除。
         time_of_creation: {type: Date, default:Date.now},
         time_of_last_edit: {type: Date, default: Date.now},
         time_of_last_read: {type: Date, default: Date.now},

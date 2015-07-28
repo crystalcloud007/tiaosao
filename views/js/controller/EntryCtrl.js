@@ -233,6 +233,11 @@ angular.module('EntryCtrl',[])
                     cate_sub: vm.entry.cate_sub,
                     title: vm.entry.title,
                     price: vm.entry.price,
+                    region_prov: vm.entry.region_prov,
+                    region_city: vm.entry.region_city,
+                    region_disc: vm.entry.region_disc,
+                    contact_n: vm.entry.contact_n,
+                    contact_p: vm.entry.contact_p,
                     desc: vm.entry.desc,
                     content: vm.entry.content
                 })
@@ -276,7 +281,6 @@ angular.module('EntryCtrl',[])
                 {
                     title: vm.entry.title,
                     price: vm.entry.price,
-                    contact: vm.entry.contact,
                     desc: vm.entry.desc,
                     content: vm.entry.content
                 })

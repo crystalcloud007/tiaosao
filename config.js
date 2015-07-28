@@ -16,11 +16,12 @@ module.exports=
     file_upload_path: './public/tmp/',
     file_store_path: './public/upload/',
     file_trash_path: './public/trash/',
-    file_admin_path: './adimn/',
+    file_admin_path: './admin/',
+    file_admin_trash_path: './admin/trash/',
     pic_upload_size: 2 * 1024 * 1024,
 
     // 有关等级
-    level_user: {'common': 0, 'vip':1},
+    level_user: {'common': 0, 'vip':1, 'admin': 1000},
     level_entry: {'common': 0, 'vip': 1, 'long': 2},
     pic_count_max:{'common': 4, 'vip': 10},
     entry_lifespan: {'common': 7, 'vip': 15, long:'30'},

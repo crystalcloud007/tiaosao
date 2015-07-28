@@ -323,7 +323,11 @@ module.exports = function(app, express)
                         creator_name: user.realname,
                         title: req.body.title,
                         price: req.body.price,
-                        contact: user.contact,
+                        region_prov: req.body.region_prov,
+                        region_city: req.body.region_city,
+                        region_disc: req.body.region_disc,
+                        contact_n: req.body.contact_n,
+                        contact_p: req.body.contact_p,
                         desc: req.body.desc,
                         content:req.body.content,
                         completed: true,
@@ -557,7 +561,6 @@ module.exports = function(app, express)
                     entry.title = req.body.title;
                     entry.price = req.body.price;
                     entry.desc = req.body.desc;
-                    entry.contact = req.body.contact;
                     entry.content = req.body.content;
                     entry.time_of_last_edit = Date.now();
                     entry.markModified('time_of_last_edit');

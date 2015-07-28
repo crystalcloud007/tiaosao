@@ -4,10 +4,12 @@
     <div class="panel-heading"><h3>{{Detail.entry.title}}</h3></div>
     <div class="panel-body">
         <p>
-        <h4>发布人：{{Detail.entry.creator_name}} <!--small><a href="list_self/{{Detail.entry.creator}}/1">查看此人发布所有帖子</a></small--></h4>
+            <h4>联系人：{{Detail.entry.contact_n}}</h4>
+        <!--h4>发布人：{{Detail.entry.creator_name}} <small><a href="list_self/{{Detail.entry.creator}}/1">查看此人发布所有帖子</a></small--></h4>
         </p>
-        <p><h4>电话号码：{{Detail.entry.contact}}</h4></p>
+        <p><h4>电话号码：{{Detail.entry.contact_p}}</h4></p>
         <p><h4>价格：{{Detail.entry.price}}</h4></p>
+        <p><h4>所在区域：{{Detail.entry.region_city}},{{Detail.entry.region_disc}}</h4></p>
         <p>
         <h4>类型描述，真实应用情况下会随着业务不同而不同：</h4>
         <ul>

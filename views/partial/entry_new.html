@@ -16,30 +16,50 @@
             </div>
             <div class="form-group">
                 <label for="input_title">标题：</label>
-                <input id="input_title" type="text" ng-model="NewEntry.entry.title" placeholder="标题" ng-required="true"/>
+                <input id="input_title" type="text" ng-model="NewEntry.entry.title" placeholder="标题" required="required"/>
             </div>
             <div class="form-group">
                 <label for="input_price">价格：</label>
-                <input id="input_price" type="number" ng-model="NewEntry.entry.price" placeholder="价格" ng-required="true"/>
+                <input id="input_price" type="number" ng-model="NewEntry.entry.price" placeholder="价格" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="input_prov">省份：</label>
+                <input id="input_prov" type="text" ng-model="NewEntry.entry.region_prov" placeholder="所在省份" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="input_city">城市：</label>
+                <input id="input_city" type="text" ng-model="NewEntry.entry.region_city" placeholder="所在城市" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="input_disc">区县：</label>
+                <input id="input_disc" type="text" ng-model="NewEntry.entry.region_disc" placeholder="所在区县" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="input_contact_n">联系人：</label>
+                <input id="input_contact_n" type="text" ng-model="NewEntry.entry.contact_n" placeholder="联系人称谓" required="required"/>
+            </div>
+            <div class="form-group">
+                <label for="input_contact_p">联系电话：</label>
+                <input id="input_contact_p" type="text" ng-model="NewEntry.entry.contact_p" placeholder="常用电话" required="required"/>
             </div>
             <div class="form-group" ng-show="NewEntry.entry.cate_sub">
                 <p>业务描述-真实应用中会随着业务类型而改变：</p>
                 <label for="input_desc1">描述1：</label>
-                <input id="input_desc1" type="text" ng-model="NewEntry.entry.desc.a" placeholder="描述1" ng-required="true"/>
+                <input id="input_desc1" type="text" ng-model="NewEntry.entry.desc.a" placeholder="描述1" required="required"/>
             </div>
             <div class="form-group" ng-show="NewEntry.entry.cate_sub">
                 <label for="input_desc2">描述2：</label>
-                <input id="input_desc2" type="text" ng-model="NewEntry.entry.desc.b" placeholder="描述2" ng-required="true"/>
+                <input id="input_desc2" type="text" ng-model="NewEntry.entry.desc.b" placeholder="描述2" required="required"/>
             </div>
             <div class="form-group" ng-show="NewEntry.entry.cate_sub">
                 <label for="input_desc3">描述3：</label>
-                <input id="input_desc3" type="text" ng-model="NewEntry.entry.desc.c" placeholder="描述3" ng-required="true"/>
+                <input id="input_desc3" type="text" ng-model="NewEntry.entry.desc.c" placeholder="描述3" required="required"/>
             </div>
             <div class="form-group">
                 <label for="input_content">具体内容：</label>
             </div>
             <div class="form-group">
-                <textarea id="input_content" rows="10" cols="100" ng-model="NewEntry.entry.content" ng-required="true">写下具体内容</textarea>
+                <textarea id="input_content" rows="10" cols="100" ng-model="NewEntry.entry.content" required="required">写下具体内容</textarea>
             </div>
             <div class="form-group">
                 <input type="submit" ng-disabled=new_entry_form.$invalid" ng-click="NewEntry.newEntry()" class="btn btn-primary" value="提交">

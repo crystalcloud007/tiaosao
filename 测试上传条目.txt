@@ -1,0 +1,80 @@
+{
+	"creator": "zhr",
+	"time_of_creation":"2015-07-28",
+	"count_of_entries": 200,
+	"description": "二手市场/二手手机，第2部分，共10部分。",
+	"entries":
+	[
+		{
+			"category_main":"second_hand",
+			"category_sub":"cell_phone",
+			"title":"出售9.5成新苹果6-plus",
+			"price":5000,
+			"region_prov":"北京",
+			"region_city":"北京",
+			"region_disc":"海淀",
+			"contact_n":"张无忌",
+			"contact_p":"13502028853",
+			"desc":{
+				"creator_type": "individual",
+				"type":{
+						"brand": "apple",
+						"model": "iPhone6 plus",
+						"capacity":"64GB",
+						"version":"国行",
+						"color":"黑色"
+					},
+				"status":{
+						"scratch_screen":"无",
+						"scratch_body":"近乎全新",
+						"func":"完全正常",
+						"duration":"1-2天",
+						"mainte_remain":"不到三个月",
+						"his_of_mainte":"无拆无修",
+						"appendix":
+							{
+								"invoice": true,
+								"battery_origin": true,
+								"charger_origin": true,
+								"headset_origin": true,
+								"memory_card": false,
+								"data_wire": true
+							}
+					},
+				"aged": "95成新"
+				
+			     },
+			"content": "当时送给周芷若的，没想到丫跟我分手把这个还给我了，赵敏又不喜欢这个颜色。怒转，欢迎大家顶帖。"
+		},
+		{
+			"category_main":"second_hand",
+			"category_sub":"cell_phone",
+			"title":"出售全新三星Galaxy S6",
+			"price":3000,
+			"region_prov":"北京",
+			"region_city":"北京",
+			"region_disc":"海淀",
+			"contact_n":"赵敏",
+			"contact_p":"13502028800",
+			"desc":{
+				"creator_type": "individual",
+				"type":{
+						"brand": "Sumsung",
+						"model": "Galaxy S6",
+						"capacity":"16GB",
+						"version":"国行",
+						"color":"白色"
+					},
+				"status":{
+						"seal": true,
+						"mainte": true,
+						"invoice": true,
+						"memory_card": false
+					},
+				"aged": "95成新"
+				
+			     },
+			"content": "全新未拆封手机，张无忌给我买了个新苹果6，这个就出手啦。"
+		}
+	]
+}

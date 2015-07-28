@@ -31,7 +31,7 @@ var admin_api = require('./routes/api_admin')(app, express);
 
 app.use('/api/user', user_api);
 app.use('/api/entry', entry_api);
-app.use('api/admin', admin_api);
+app.use('/api/admin', admin_api);
 
 
 // Send html file for home page
