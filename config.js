@@ -20,6 +20,8 @@ module.exports=
     file_admin_trash_path: './admin/trash/',
     pic_upload_size: 2 * 1024 * 1024,
 
+    pic_status:{'uploaded':'uploaed','archived':'archived','deleted':'deleted'},
+
     // 有关等级
     level_user: {'common': 0, 'vip':1, 'admin': 1000},
     level_entry: {'common': 0, 'vip': 1, 'long': 2},

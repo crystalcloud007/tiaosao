@@ -65,7 +65,7 @@ module.exports = function(app, express)
     });
 
     // 批量上传帖子的API
-    api.post('/entry/batch_post', function(req,res)
+    api.post('/entry/file_post', function(req,res)
     {
         // 上传文件
         var form = new formidable.IncomingForm();
@@ -94,7 +94,7 @@ module.exports = function(app, express)
         });
     });
 
-    api.get('/entry/batch_parse/:filename', function(req,res)
+    api.get('/entry/file_parse/:filename', function(req,res)
     {
         // 解析文件
         console.log('parsing....');
@@ -137,10 +137,11 @@ module.exports = function(app, express)
                             category_main: entries[entry_index].category_main,
                             category_sub: entries[entry_index].category_sub,
                             title: entries[entry_index].title,
-                            price: entries[entry_index].price,
+                            //price: entries[entry_index].price,
                             region_prov: entries[entry_index].region_prov,
                             region_city: entries[entry_index].region_city,
                             region_disc: entries[entry_index].region_disc,
+                            region_addr: entries[entry_index].region_addr,
                             contact_n: entries[entry_index].contact_n,
                             contact_p: entries[entry_index].contact_p,
                             desc: entries[entry_index].desc,
@@ -167,19 +168,12 @@ module.exports = function(app, express)
         });
     });
 
-    api.get('/entry/batch_clear/:filename', function(req,res)
+    api.get('/entry/file_delete/:filename', function(req,res)
     {
         var file_name = file_admin_path + req.params.filename + '.txt';
-        fs.renameSync(file_name, file_admin_trash_path + req.params.filename + '.txt', function(err)
-        {
-            if(err)
-            {
-                res.send({success: false, message: err});
-                return;
-            }
-            var msg = 'File ' + req.params.filename + ' has been moved to the trash folder.';
-            res.send({success: true, message:msg});
-        });
+        fs.renameSync(file_name, file_admin_trash_path + req.params.filename + '.txt');
+        var msg = 'File ' + req.params.filename + ' has been moved to the trash folder.';
+        res.send({success: true, message:msg});
     });
 
 

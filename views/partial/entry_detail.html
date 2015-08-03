@@ -24,8 +24,8 @@
                 <p><h4>{{Detail.entry.content}}</h4></p>
             </div>
         </div>
-        <p>该信息已被浏览{{Detail.entry.count_of_read}}次，距上次浏览已经过了{{Detail.check_time_interval}}。</p>
-        <p>已经有{{Detail.entry.count_of_comments}}条评论。</p>
+        <p>该信息已被浏览{{Detail.entry.count_read}}次，距上次浏览已经过了{{Detail.check_time_interval}}。</p>
+        <p>已经有{{Detail.entry.count_comments}}条评论。</p>
         <a ng-if="Detail.entry.creator==Detail.userID" href="/edit_entry/{{Detail.entryID}}">编辑帖子</a>
     </div>
 </div>

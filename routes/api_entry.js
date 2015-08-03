@@ -18,7 +18,7 @@ module.exports = function(app, express)
     {
         // 测试排序
         /*Entry.find({}).sort('-desc.a')
-        .select('category_main category_sub creator_name title price contact desc count_of_read count_of_comments')
+        .select('category_main category_sub creator_name title price contact desc count_read count_comments')
         .exec(function(err, entries)
         {
             if(err)
@@ -30,7 +30,7 @@ module.exports = function(app, express)
         });*/
         // 测试按DESC中项目查找
         Entry.find({'desc.a':'desc-a'})
-            .select('category_main category_sub creator_name title price contact desc count_of_read count_of_comments')
+            .select('category_main category_sub creator_name title price contact desc count_read count_comments')
             .exec(function(err, entries)
             {
                 if(err)
@@ -112,7 +112,7 @@ module.exports = function(app, express)
             return;
         }
         Entry.find({creator:req.params.id})
-            .select('category_main category_sub creator_name title price contact desc count_of_read count_of_comments')
+            .select('category_main category_sub creator_name title price contact desc count_read count_comments')
             .skip((pageNum - 1) * config.entries_per_page)
             .limit(config.entries_per_page).exec(function(err, entries)
             {
@@ -152,7 +152,7 @@ module.exports = function(app, express)
         if(req.params.category_main == 'all')
         {
             Entry.find({})
-                .select('category_main category_sub creator_name title price contact desc count_of_read count_of_comments')
+                .select('category_main category_sub creator_name title price contact desc count_read count_comments')
                 .skip((pageNum - 1) * config.entries_per_page)
                 .limit(config.entries_per_page).exec(function(err, entries)
             {
@@ -170,7 +170,7 @@ module.exports = function(app, express)
             if(req.params.category_sub == 'all')
             {
                 Entry.find({category_main: req.params.category_main})
-                    .select('category_main category_sub creator_name title price contact desc count_of_read count_of_comments')
+                    .select('category_main category_sub creator_name title price contact desc count_read count_comments')
                     .skip((pageNum - 1) * config.entries_per_page).limit(config.entries_per_page)
                     .exec(function(err, entries)
                     {
@@ -185,7 +185,7 @@ module.exports = function(app, express)
            else
             {
                 Entry.find({category_main: req.params.category_main, category_sub: req.params.category_sub})
-                    .select('category_main category_sub creator_name title price contact desc count_of_read count_of_comments')
+                    .select('category_main category_sub creator_name title price contact desc count_read count_comments')
                     .skip((pageNum - 1) * config.entries_per_page).limit(config.entries_per_page)
                     .exec(function(err, entries)
                     {
@@ -212,10 +212,10 @@ module.exports = function(app, express)
             if(entry)
             {
                 // 记录观察次数
-                entry.count_of_read += 1;
-                var last_read_time = entry.time_of_last_read;
-                entry.time_of_last_read = Date.now();
-                entry.markModified('time_of_last_read');
+                entry.count_read += 1;
+                var last_read_time = entry.time_last_read;
+                entry.time_last_read = Date.now();
+                entry.markModified('time_last_read');
                 entry.save(function(err)
                 {
                     if(err)
@@ -256,7 +256,7 @@ module.exports = function(app, express)
                 else
                 {
                     Comment.find({target: entry._id}).skip((pageNum - 1) * config.comment_per_page)
-                        .limit(config.comment_per_page).select('creator_name content time_of_creation')
+                        .limit(config.comment_per_page).select('creator_name content time_creation')
                         .exec(function(err, comments)
                         {
                             if(err)
@@ -478,7 +478,7 @@ module.exports = function(app, express)
     // 编写评论
     api.post('/comment/:id', function(req,res)
     {
-        Entry.findById(req.params.id).select('count_of_comments completed').exec(function(err,entry)
+        Entry.findById(req.params.id).select('count_comments completed').exec(function(err,entry)
         {
             if(err)
             {
@@ -511,7 +511,7 @@ module.exports = function(app, express)
                         }
                     );
 
-                    entry.count_of_comments += 1;
+                    entry.count_comments += 1;
                     entry.save(function(err)
                     {
                         if(err)
@@ -562,8 +562,8 @@ module.exports = function(app, express)
                     entry.price = req.body.price;
                     entry.desc = req.body.desc;
                     entry.content = req.body.content;
-                    entry.time_of_last_edit = Date.now();
-                    entry.markModified('time_of_last_edit');
+                    entry.time_last_edit = Date.now();
+                    entry.markModified('time_last_edit');
 
                     entry.save(function(err)
                     {
@@ -590,7 +590,7 @@ module.exports = function(app, express)
     // 编辑标题和价格
     api.post('/edit/title/:id', function(req,res)
     {
-        Entry.findById(req.params.id).select('creator title price time_of_last_edit').exec(function(err, entry)
+        Entry.findById(req.params.id).select('creator title price time_last_edit').exec(function(err, entry)
         {
             if(err)
             {
@@ -604,8 +604,8 @@ module.exports = function(app, express)
                 {
                     entry.title = req.body.title;
                     entry.price = req.body.price;
-                    entry.time_of_last_edit = Date.now();
-                    entry.markModified('time_of_last_edit');
+                    entry.time_last_edit = Date.now();
+                    entry.markModified('time_last_edit');
 
                     entry.save(function(err)
                     {
@@ -633,7 +633,7 @@ module.exports = function(app, express)
     // 编辑描述信息，即desc
     api.post('/edit/desc/:id', function(req,res)
     {
-        Entry.findById(req.params.id).select('creator desc time_of_last_edit').exec(function(err, entry)
+        Entry.findById(req.params.id).select('creator desc time_last_edit').exec(function(err, entry)
         {
             if(err)
             {
@@ -646,8 +646,8 @@ module.exports = function(app, express)
                 if(verified)
                 {
                     entry.desc = JSON.parse(req.body.desc);
-                    entry.time_of_last_edit = Date.now();
-                    entry.markModified('time_of_last_edit');
+                    entry.time_last_edit = Date.now();
+                    entry.markModified('time_last_edit');
 
                     entry.save(function(err)
                     {
@@ -676,7 +676,7 @@ module.exports = function(app, express)
     // 编辑内容
     api.post('/edit/content/:id', function(req,res)
     {
-        Entry.findById(req.params.id).select('creator content time_of_last_edit').exec(function(err, entry)
+        Entry.findById(req.params.id).select('creator content time_last_edit').exec(function(err, entry)
         {
             if(err)
             {
@@ -690,8 +690,8 @@ module.exports = function(app, express)
                 if(verified)
                 {
                     entry.content = req.body.content;
-                    entry.time_of_last_edit = Date.now();
-                    entry.markModified('time_of_last_edit');
+                    entry.time_last_edit = Date.now();
+                    entry.markModified('time_last_edit');
 
                     entry.save(function(err)
                     {
