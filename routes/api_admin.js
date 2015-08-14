@@ -21,6 +21,7 @@ module.exports = function(app, express)
 {
     var api = express.Router();
 
+    // 注册管理员
     api.post('/signup', function(req,res)
     {
         var user = new User(
@@ -97,7 +98,7 @@ module.exports = function(app, express)
     api.get('/entry/file_parse/:filename', function(req,res)
     {
         // 解析文件
-        console.log('parsing....');
+        //console.log('parsing....');
         var entries = [];
         var entries_to_DB = [];
         var file_name = file_admin_path + req.params.filename + '.txt';
